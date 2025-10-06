@@ -1,0 +1,33 @@
+use std::{collections::HashMap};
+use crate::command::Command;
+
+#[allow(dead_code)]
+pub struct Store {
+    value: HashMap<String, String>,
+}
+
+impl Store {
+    pub fn new() -> Self {
+        Self {
+           value: HashMap::new(),
+        }
+    }
+    
+    pub fn execute(&mut self, s: &str) { //Result<String, String> {
+        
+            let _: Command = s.parse().unwrap();
+        // match s.parse()? {
+            // Command::Get(key) => { 
+            //     self.value.get(&key).map(|v| v.to_owned()).ok_or_else(|| format!("Error to parse key: {}", key))
+            // }
+            // Command::Set(key,value ) => { 
+            //     self.value.insert(key, value);
+            //     Ok("OK".to_string())
+            // }
+            // Command::Delete(key) => { 
+            //     self.value.remove(&key).ok_or_else(|| format!("Error to remove value with key: {} ", key))
+            // } 
+        // }
+
+    }
+}
