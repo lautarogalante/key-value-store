@@ -13,21 +13,20 @@ impl Store {
         }
     }
     
-    pub fn execute(&mut self, s: &str) { //Result<String, String> {
+    pub fn execute(&mut self, s: &str) -> Result<String, String> {
         
-            let _: Command = s.parse().unwrap();
-        // match s.parse()? {
-            // Command::Get(key) => { 
-            //     self.value.get(&key).map(|v| v.to_owned()).ok_or_else(|| format!("Error to parse key: {}", key))
-            // }
-            // Command::Set(key,value ) => { 
-            //     self.value.insert(key, value);
-            //     Ok("OK".to_string())
-            // }
-            // Command::Delete(key) => { 
-            //     self.value.remove(&key).ok_or_else(|| format!("Error to remove value with key: {} ", key))
-            // } 
-        // }
+        match s.parse()? {
+            Command::Get(key) => { 
+                self.value.get(&key).map(|v| v.to_owned()).ok_or_else(|| format!("The value with the key: {} was deleted", key))
+            }
+            Command::Set(key,value ) => { 
+                self.value.insert(key, value);
+                Ok(String::from("Inserted value\n"))
+            }
+            Command::Delete(key) => { 
+                self.value.remove(&key).ok_or_else(|| format!("Error to remove value with key: {} ", key))
+            } 
+        }
 
     }
 }

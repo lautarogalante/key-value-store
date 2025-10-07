@@ -20,8 +20,8 @@ fn handle_connection(stream: &mut TcpStream) ->std::io::Result<i32> {
         };
         
         let input = String::from_utf8(buffer[..n].to_vec());
-        let _value = in_memory.execute(&input.unwrap());
-        // let _ = stream.write_all(format!("{:?}", value).as_bytes());
+        let value = in_memory.execute(&input.unwrap());
+        let _ = stream.write_all(format!("{:?}\n", value).as_bytes());
     }
 }
 
