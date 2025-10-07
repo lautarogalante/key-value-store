@@ -1,7 +1,6 @@
 use std::{collections::HashMap};
 use crate::command::Command;
 
-#[allow(dead_code)]
 pub struct Store {
     value: HashMap<String, String>,
 }
