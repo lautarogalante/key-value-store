@@ -36,7 +36,7 @@ pub fn parse(command: &str) -> Result<Command, String> {
         "del" => {
             return Ok(Command::Delete(key))
         }
-        _ => return Err(String::from("Invalid number of arguments"))
+        _ => return Err(String::from("Invalid argument"))
     } 
 
 }
