@@ -1,42 +1,41 @@
-
 use crate::command::Command;
 
-pub fn parse_args(s: &str) -> Vec<String> {
-    if s.contains('"'){
-        let args = s
-            .replace('"', "").trim_end()
-            .split(' ')
-            .map(|s| s.to_string())
-            .collect();
-        return args;
-    }
-    return s.trim_end().split(' ').map(|s| s.to_string()).collect();
-}
-
-pub fn parse_key_value(s: Vec<String>) -> (String, String, String) { 
-    return (s[0].clone(), s[1].clone(), s[2].clone());
-}
-
-pub fn parse_key(s: Vec<String>) -> (String, String){
-    return (s[0].clone(), s[1].clone());
-}
-
 pub fn parse(command: &str) -> Result<Command, String> {
-    let args: Vec<String> = parse_args(command);
-    let (command, key) = parse_key(args.clone());
-    
-    match command.to_lowercase().as_str() {
-        "get" =>  { 
-            return Ok(Command::Get(key))
+    let parts: Vec<&str> = if command.contains('"') {
+        command
+            .split('"')
+            .map(|s| s.trim())
+            .filter(|s| !s.is_empty())
+            .collect()
+    } else {
+        command.split_whitespace().collect()
+    };
+
+    if parts.is_empty() {
+        return Err(String::from("empty command"))
+    }
+
+    match parts[0].to_lowercase().as_str() {
+        "get" => { 
+            
+            if parts.len() != 2 {
+               return Err(String::from("get command requires, one argument")) 
+            }    
+            
+            Ok(Command::Get(parts[1].to_string())) 
         }
         "set" => { 
-            let (_, key, value) = parse_key_value(args);
-            return Ok(Command::Set(key, value))
+            if parts.len() != 3 {
+                return Err(String::from("set command requires two arguments"))
+            }
+            Ok(Command::Set(parts[1].to_string(), parts[2].to_string()))
         }
-        "del" => {
-            return Ok(Command::Delete(key))
+        "del" => { 
+            if parts.len() != 2 {
+                return Err(String::from("del command require one argument"))
+            }
+            Ok(Command::Delete(parts[1].to_string()))
         }
-        _ => return Err(String::from("Invalid argument"))
-    } 
-
+        _ => Err(String::from("command not found"))
+    }
 }

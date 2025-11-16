@@ -23,7 +23,8 @@ impl Store {
                 Ok(String::from("Inserted value\n"))
             }
             Command::Delete(key) => { 
-                self.value.remove(&key).ok_or_else(|| format!("Error to remove value with key: {} ", key))
+                let value = self.value.remove(&key).ok_or_else(|| format!("Error to remove value with key: {} ", key))?;
+                Ok(format!("Value: {} with the Key: {} has been deleted", value, key))
             } 
         }
 
